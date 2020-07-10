@@ -18,8 +18,12 @@ int32_t start_ftp(int32_t s, char *ip, int32_t port, unsigned char options, char
     return 1;
   }
   buf = hydra_receive_line(s);
-  if (buf == NULL)
+  if (buf == NULL){
+  	hydra_completed_pair();
+  	if (memcmp(hydra_get_next_pair(), &HYDRA_EXIT, sizeof(HYDRA_EXIT)) == 0)
+    	return 4;
     return 1;
+  }
   /* special hack to identify 530 user unknown msg. suggested by
    * Jean-Baptiste.BEAUFRETON@turbomeca.fr */
   if (buf[0] == '5' && buf[1] == '3' && buf[2] == '0') {
@@ -56,8 +60,12 @@ int32_t start_ftp(int32_t s, char *ip, int32_t port, unsigned char options, char
     return 1;
   }
   buf = hydra_receive_line(s);
-  if (buf == NULL)
+  if (buf == NULL){
+  	hydra_completed_pair();
+  	if (memcmp(hydra_get_next_pair(), &HYDRA_EXIT, sizeof(HYDRA_EXIT)) == 0)
+    	return 4;
     return 1;
+  }
   if (buf[0] == '2') {
     hydra_report_found_host(port, ip, "ftp", fp);
     hydra_completed_pair_found();

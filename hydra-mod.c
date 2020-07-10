@@ -1023,6 +1023,8 @@ char *hydra_receive_line(int32_t socket) {
       printf("[DEBUG] hydra_data_ready_timed: %d, waittime: %d, conwait: %d, "
              "socket: %d\n",
              i, waittime, conwait, socket);
+      free(buff);
+      return NULL;
   }
 
   return buff;

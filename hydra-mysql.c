@@ -257,8 +257,12 @@ int32_t start_mysql(int32_t sock, char *ip, int32_t port, unsigned char options,
 #endif
   }
 
-  if (res == 1)
+  if (res == 1){
+  	hydra_completed_pair();
+	if (memcmp(hydra_get_next_pair(), &HYDRA_EXIT, sizeof(HYDRA_EXIT)) == 0)
+    	return 3;
     return 1;
+  }
 
   /* prepare client authentication packet */
   response = hydra_mysql_prepare_auth(login, pass);
